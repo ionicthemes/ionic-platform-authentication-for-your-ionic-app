@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope, $state) {
+.controller('LoginCtrl', function($scope) {
   var authProvider = 'basic';
   var authSettings = { 'remember': true };
 
