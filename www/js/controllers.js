@@ -1,9 +1,20 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope) {
+.controller('LoginCtrl', function($scope,UserService) {
   var authProvider = 'basic';
   var authSettings = { 'remember': true };
-
+  var existUserLogged = Ionic.User.current();
+  console.log(existUserLogged);
+  if(existUserLogged.isAuthenticated()){
+    debugger;
+    $scope.loggedEmail = existUserLogged.details.email;
+    $scope.hideLogIn = true;
+    $scope.showEmail = true;
+  }
+  else{
+    $scope.hideLogOut = true;
+    $scope.showEmail = false;
+  }
   $scope.login = function(data) {
     if (data == undefined) {
       var loginDetails = {
@@ -17,17 +28,23 @@ angular.module('starter.controllers', [])
       }
     }
     Ionic.Auth.login(authProvider, authSettings, loginDetails)
-      .then($scope.authSuccess, $scope.authFailure);
+      .then(authSuccess, authFailure);
   }
-  $scope.authSuccess = function() {
+  var authSuccess = function() {
     var user = Ionic.User.current();
-    var email = user.details.email;
-    document.getElementById('EmailUserLogged').innerText = email;
-    document.getElementById("logoutButton").disabled = false;
-    document.getElementById("loginButton").disabled = true;
+    //console.log(user);
+    /*UserService.setUser({
+       email: user.details.email,
+     });*/
+    $scope.loggedEmail = user.details.email;
+    $scope.showEmail = true;
+    $scope.hideLogIn = true;
+    $scope.hideLogOut = false;
+    $scope.$apply();
+    //user.save();
   }
 
-  $scope.authFailure = function(errors) {
+  var authFailure = function(errors) {
       var errorString = errors.response.responseText;
       var status = errors.response.status;
       var jsonObj = $.parseJSON('[' + errorString + ']');
@@ -50,9 +67,9 @@ angular.module('starter.controllers', [])
 
   $scope.logout = function(){
     Ionic.Auth.logout();
-    document.getElementById('EmailUserLogged').innerText = "No user is logged-in";
-    document.getElementById("logoutButton").disabled = true;
-    document.getElementById("loginButton").disabled = false;
+    $scope.showEmail = false;
+    $scope.hideLogIn = false;
+    $scope.hideLogOut = true;
   }
 })
 

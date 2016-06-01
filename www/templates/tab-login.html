@@ -8,13 +8,14 @@
                 <input id ='passwordText' type="password" placeholder="Password" ng-model="data.password">
             </label>
         </div>
-        <button id='loginButton'class="button button-block button-positive" ng-click="login(data)">Login</button>
+        <button ng-hide="hideLogIn" class="button button-block button-positive"  ng-click="login(data)">Login</button>
         <p class="text-center">
             <a href="#/tab/signup">Sign Up</a>
         </p><br>
 
         <br><label> User Logged: </label><br>
-			  <label id ='EmailUserLogged'> No user is logged-in</label>
-        <br><button id='logoutButton'disabled=true ng-click="logout()">LogOut</button>
+			  <label ng-show="!showEmail"> No user is logged-in</label>
+        <label ng-show="showEmail"> {{loggedEmail}} </label>
+        <br><button id='logoutButton' ng-hide="hideLogOut" ng-click="logout()">LogOut</button>
     </ion-content>
 </ion-view>
