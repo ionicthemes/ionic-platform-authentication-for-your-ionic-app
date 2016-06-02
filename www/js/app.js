@@ -7,7 +7,17 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$rootScope,$state) {
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    if(toState.data.authenticate){
+      var existUserLogged = Ionic.User.current();
+      if(!existUserLogged.isAuthenticated()){
+        event.preventDefault();
+        $state.go('tab.login');
+      }
+    }
+  });
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -49,6 +59,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
                 templateUrl: 'templates/tab-login.html',
                 controller: 'LoginCtrl'
             }
+          },
+        data: {
+            authenticate: false
         }
     })
 
@@ -59,10 +72,25 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
                 templateUrl: 'templates/tab-signup.html',
                 controller: 'SignUpCtrl'
             }
+          },
+        data: {
+            authenticate: false
         }
-    });
+})
 
+    .state('tab.user', {
+        url: '/user',
+        views: {
+            'tab-user': {
+                templateUrl: 'templates/tab-user.html',
+                controller: 'LoginCtrl'
+            }
+          },
+        data: {
+              authenticate: true
+      }
+    });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/login');
+  $urlRouterProvider.otherwise('/tab/user');
 
 });

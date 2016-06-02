@@ -6,13 +6,18 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
     <!-- LogIn Tab -->
-    <ion-tab title="LogIn" icon-off="ion-person" icon-on="ion-person" href="#/tab/login">
+    <ion-tab title="LogIn" icon-off="ion-person" icon-on="ion-person" href="#/tab/login" >
         <ion-nav-view name="tab-login"></ion-nav-view>
     </ion-tab>
 
     <!-- SignUp Tab -->
     <ion-tab title="SignUp" icon-off="ion-person-add" icon-on="ion-person-add" href="#/tab/signup">
         <ion-nav-view name="tab-signup"></ion-nav-view>
+    </ion-tab>
+
+    <!-- User Tab -->
+    <ion-tab title="User" icon-off="ion-ios-body" icon-on="ion-ios-body" href="#/tab/user" >
+        <ion-nav-view name="tab-user"></ion-nav-view>
     </ion-tab>
 
 </ion-tabs>

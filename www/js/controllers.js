@@ -1,20 +1,25 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope,UserService) {
+.controller('LoginCtrl', function($scope,$state) {
   var authProvider = 'basic';
   var authSettings = { 'remember': true };
   var existUserLogged = Ionic.User.current();
-  console.log(existUserLogged);
   if(existUserLogged.isAuthenticated()){
-    debugger;
     $scope.loggedEmail = existUserLogged.details.email;
-    $scope.hideLogIn = true;
+    $scope.hideLogOut = false;
     $scope.showEmail = true;
+    $scope.hideLogIn = true;
+    // $scope.hideTabLogIn = true;
+    // $scope.hideTabUser = false;
   }
   else{
+    $scope.hideLogIn = false;
     $scope.hideLogOut = true;
     $scope.showEmail = false;
+    // $scope.hideTabLogIn = false;
+    // $scope.hideTabUser = true;
   }
+
   $scope.login = function(data) {
     if (data == undefined) {
       var loginDetails = {
@@ -32,16 +37,14 @@ angular.module('starter.controllers', [])
   }
   var authSuccess = function() {
     var user = Ionic.User.current();
-    //console.log(user);
-    /*UserService.setUser({
-       email: user.details.email,
-     });*/
     $scope.loggedEmail = user.details.email;
     $scope.showEmail = true;
     $scope.hideLogIn = true;
     $scope.hideLogOut = false;
+    $scope.hideTabLogIn = true;
+    $scope.hideTabUser = false;
     $scope.$apply();
-    //user.save();
+    $state.go('tab.user');
   }
 
   var authFailure = function(errors) {
@@ -68,8 +71,12 @@ angular.module('starter.controllers', [])
   $scope.logout = function(){
     Ionic.Auth.logout();
     $scope.showEmail = false;
-    $scope.hideLogIn = false;
     $scope.hideLogOut = true;
+    $scope.hideLogIn = false;
+    $scope.hideTabLogIn = false;
+    $scope.hideTabUser = true;
+    $state.go('tab.login');
+
   }
 })
 
