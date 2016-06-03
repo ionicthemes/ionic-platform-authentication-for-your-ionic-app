@@ -41,8 +41,8 @@ angular.module('starter.controllers', [])
     $scope.showEmail = true;
     $scope.hideLogIn = true;
     $scope.hideLogOut = false;
-    $scope.hideTabLogIn = true;
-    $scope.hideTabUser = false;
+    // $scope.hideTabLogIn = true;
+    // $scope.hideTabUser = false;
     $scope.$apply();
     $state.go('tab.user');
   }
@@ -73,8 +73,8 @@ angular.module('starter.controllers', [])
     $scope.showEmail = false;
     $scope.hideLogOut = true;
     $scope.hideLogIn = false;
-    $scope.hideTabLogIn = false;
-    $scope.hideTabUser = true;
+    // $scope.hideTabLogIn = false;
+    // $scope.hideTabUser = true;
     $state.go('tab.login');
 
   }
