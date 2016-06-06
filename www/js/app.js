@@ -7,13 +7,13 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform,$rootScope,$state) {
+.run(function($ionicPlatform, $rootScope, $state) {
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
     if(toState.data.authenticate){
       var existUserLogged = Ionic.User.current();
       if(!existUserLogged.isAuthenticated()){
         event.preventDefault();
-        $state.go('tab.login');
+        $state.go('auth.login');
       }
     }
   });
@@ -23,10 +23,9 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers',
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       if (cordova.plugins.Keyboard.hideKeyboardAccessoryBar) {
-              cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-          }
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -44,53 +43,60 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers',
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
+  .state('auth', {
+    url: '/auth',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/auth/tabs.html'
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.login', {
-        url: '/login',
-        views: {
-            'tab-login': {
-                templateUrl: 'templates/tab-login.html',
-                controller: 'LoginCtrl'
-            }
-          },
-        data: {
-            authenticate: false
-        }
-    })
-
-    .state('tab.signup', {
-        url: '/signup',
-        views: {
-            'tab-signup': {
-                templateUrl: 'templates/tab-signup.html',
-                controller: 'SignUpCtrl'
-            }
-          },
-        data: {
-            authenticate: false
-        }
-})
-
-    .state('tab.user', {
-        url: '/user',
-        views: {
-            'tab-user': {
-                templateUrl: 'templates/tab-user.html',
-                controller: 'LoginCtrl'
-            }
-          },
-        data: {
-              authenticate: true
+  .state('auth.login', {
+    url: '/login',
+    views: {
+      'tab-login': {
+        templateUrl: 'templates/auth/login.html',
+        controller: 'LogInCtrl'
       }
-    });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/user');
+    },
+    data: {
+      authenticate: false
+    }
+  })
 
+  .state('auth.signup', {
+    url: '/signup',
+    views: {
+      'tab-signup': {
+        templateUrl: 'templates/auth/signup.html',
+        controller: 'SignUpCtrl'
+      }
+    },
+    data: {
+      authenticate: false
+    }
+  })
+
+  .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/app/tabs.html'
+  })
+
+  .state('app.user', {
+      url: '/user',
+      views: {
+          'tab-user': {
+              templateUrl: 'templates/app/user.html',
+              controller: 'LoginCtrl'
+          }
+        },
+      data: {
+            authenticate: true
+    }
+  })
+
+  ;
+
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/user');
 });

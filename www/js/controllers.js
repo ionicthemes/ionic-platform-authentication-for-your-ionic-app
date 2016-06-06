@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope,$state) {
+.controller('LogInCtrl', function($scope,$state) {
   var authProvider = 'basic';
   var authSettings = { 'remember': true };
   var existUserLogged = Ionic.User.current();
