@@ -31,6 +31,11 @@ After this, we need to set up some stuff before starting working on the **_Ionic
 - `npm install`
 - `bower install`
 - `ionic setup sass`
+As we are going to use Ionic Platform services, we need to install and init the platform services with this command:
+- `ionic add ionic-platform-web-client`
+- `ionic io init`
+
+**NOTE**: The last step is critical, if we install the *ionic-platform-web-client* but don't init, then we may find some bugs when serving the app.
 
 Finally, to see the current state of the project, run:
 - `ionic serve`
