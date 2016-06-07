@@ -1,3 +1,8 @@
+angular.module('underscore', [])
+.factory('_', function() {
+  return window._; // assumes underscore has already been loaded on the page
+});
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -5,20 +10,28 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers', 'starter.services'])
+angular.module('starter', [
+  'ionic',
+  'ionic.service.core',
+  'starter.controllers',
+  'starter.services',
+  'underscore'
+])
 
-.run(function($ionicPlatform, $rootScope, $state) {
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    if(toState.data.authenticate){
-      var existUserLogged = Ionic.User.current();
-      if(!existUserLogged.isAuthenticated()){
-        event.preventDefault();
+.run(function($ionicPlatform, $rootScope, $state, AuthService) {
+  $ionicPlatform.ready(function() {
+    AuthService.userIsLoggedIn().then(function(response)
+    {
+      if(response === true)
+      {
+        $state.go('app.user');
+      }
+      else
+      {
         $state.go('auth.login');
       }
-    }
-  });
+    });
 
-  $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -30,6 +43,21 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers',
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }
+  });
+
+  // UI Router Authentication Check
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    if (toState.data.authenticate)
+    {
+      AuthService.userIsLoggedIn().then(function(response)
+      {
+        if(response === false)
+        {
+          event.preventDefault();
+          $state.go('auth.login');
+        }
+      });
     }
   });
 })
@@ -83,15 +111,15 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'starter.controllers',
   })
 
   .state('app.user', {
-      url: '/user',
-      views: {
-          'tab-user': {
-              templateUrl: 'templates/app/user.html',
-              controller: 'LoginCtrl'
-          }
-        },
-      data: {
-            authenticate: true
+    url: '/user',
+    views: {
+      'tab-user': {
+        templateUrl: 'templates/app/user.html',
+        controller: 'UserCtrl'
+      }
+    },
+    data: {
+      authenticate: true
     }
   })
 

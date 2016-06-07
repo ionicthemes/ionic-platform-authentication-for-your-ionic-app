@@ -1,8 +1,6 @@
 <ion-view view-title="User">
-    <ion-content class="padding">
-      <br>
-      <label ng-show="!showEmail"> No user is logged-in</label>
-      <label ng-show="showEmail"> Welcome! {{loggedEmail}} </label>
-      <br><button ng-hide="hideLogOut" ng-click="logout()">LogOut</button>
-    </ion-content>
+  <ion-content class="padding">
+    <h3 class="text-center" ng-show="current_user">Welcome! {{current_user.details.email}}</h3>
+    <button class="button button-block button-clear button-stable" ng-click="logout()">LogOut</button>
+  </ion-content>
 </ion-view>
