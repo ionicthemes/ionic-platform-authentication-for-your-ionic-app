@@ -1,3 +1,8 @@
+angular.module('underscore', [])
+.factory('_', function() {
+  return window._; // assumes underscore has already been loaded on the page
+});
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -5,32 +10,54 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services'])
+angular.module('starter', [
+  'ionic',
+  'ionic.service.core',
+  'starter.controllers',
+  'starter.services',
+  'underscore'
+])
 
-.run(function($ionicPlatform,$rootScope,$state) {
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    if(toState.data.authenticate){
-      var existUserLogged = Ionic.User.current();
-      if(!existUserLogged.isAuthenticated()){
-        event.preventDefault();
-        $state.go('tab.login');
-      }
-    }
-  });
-
+.run(function($ionicPlatform, $rootScope, $state, AuthService) {
   $ionicPlatform.ready(function() {
+    AuthService.userIsLoggedIn().then(function(response)
+    {
+      if(response === true)
+      {
+        $state.go('app.user');
+      }
+      else
+      {
+        $state.go('auth.login');
+      }
+    });
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       if (cordova.plugins.Keyboard.hideKeyboardAccessoryBar) {
-              cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-          }
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }
+  });
+
+  // UI Router Authentication Check
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    if (toState.data.authenticate)
+    {
+      AuthService.userIsLoggedIn().then(function(response)
+      {
+        if(response === false)
+        {
+          event.preventDefault();
+          $state.go('auth.login');
+        }
+      });
     }
   });
 })
@@ -44,53 +71,60 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
+  .state('auth', {
+    url: '/auth',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/auth/tabs.html'
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.login', {
-        url: '/login',
-        views: {
-            'tab-login': {
-                templateUrl: 'templates/tab-login.html',
-                controller: 'LoginCtrl'
-            }
-          },
-        data: {
-            authenticate: false
-        }
-    })
-
-    .state('tab.signup', {
-        url: '/signup',
-        views: {
-            'tab-signup': {
-                templateUrl: 'templates/tab-signup.html',
-                controller: 'SignUpCtrl'
-            }
-          },
-        data: {
-            authenticate: false
-        }
-})
-
-    .state('tab.user', {
-        url: '/user',
-        views: {
-            'tab-user': {
-                templateUrl: 'templates/tab-user.html',
-                controller: 'LoginCtrl'
-            }
-          },
-        data: {
-              authenticate: true
+  .state('auth.login', {
+    url: '/login',
+    views: {
+      'tab-login': {
+        templateUrl: 'templates/auth/login.html',
+        controller: 'LogInCtrl'
       }
-    });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/user');
+    },
+    data: {
+      authenticate: false
+    }
+  })
 
+  .state('auth.signup', {
+    url: '/signup',
+    views: {
+      'tab-signup': {
+        templateUrl: 'templates/auth/signup.html',
+        controller: 'SignUpCtrl'
+      }
+    },
+    data: {
+      authenticate: false
+    }
+  })
+
+  .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/app/tabs.html'
+  })
+
+  .state('app.user', {
+    url: '/user',
+    views: {
+      'tab-user': {
+        templateUrl: 'templates/app/user.html',
+        controller: 'UserCtrl'
+      }
+    },
+    data: {
+      authenticate: true
+    }
+  })
+
+  ;
+
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/user');
 });

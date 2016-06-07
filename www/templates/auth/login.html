@@ -1,0 +1,18 @@
+<ion-view view-title="Log In">
+  <ion-content class="padding">
+    <form name="login_form" class="form-container" novalidate>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <input type="text" placeholder="Email" ng-model="user.email" required>
+        </label>
+        <label class="item item-input">
+          <input type="password" placeholder="Password" ng-model="user.password" required>
+        </label>
+      </div>
+      <button class="button button-block button-positive" ng-click="login(user)" ng-disabled="login_form.$invalid">Login</button>
+    </form>
+    <div ng-show="errors">
+      <p class="message error" ng-repeat="error in errors"><b>[{{error.code}}]</b> {{error.msg}}</p>
+    </div>
+  </ion-content>
+</ion-view>

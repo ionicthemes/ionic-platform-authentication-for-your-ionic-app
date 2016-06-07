@@ -1,4 +1,12 @@
 {
-  "name": "IonicTest",
-  "app_id": "a8ec3c7c"
+  "name": "Ionic Login",
+  "app_id": "529abc7a",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }
