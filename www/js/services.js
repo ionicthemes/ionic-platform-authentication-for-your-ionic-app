@@ -20,21 +20,38 @@ angular.module('starter.services', [])
     .then(function(data){
       deferred.resolve(data);
     }, function(errors){
-      var json_response = JSON.parse(errors.response.responseText),
-          errors_list = [];
+      var errors_list = [];
+      if(errors && errors.response && errors.response.responseText)
+      {
+        var json_response = JSON.parse(errors.response.responseText);
 
-      if(json_response.error.details.length > 0) {
-        _.each(json_response.error.details, function(err){
+        if(json_response.error.details.length > 0) {
+          _.each(json_response.error.details, function(err){
+            var error = {
+              code: json_response.meta.status,
+              msg: err.errors[0]
+            };
+            errors_list.push(error);
+          });
+        }
+        else {
           var error = {
             code: json_response.meta.status,
-            msg: err.errors[0]
+            msg: "An unexpected error has occurred"
           };
           errors_list.push(error);
-        });
+        }
+      }
+      else if (errors && errors.length > 0){
+        var error = {
+          code: "unknown",
+          msg: errors[0]
+        };
+        errors_list.push(error);
       }
       else {
         var error = {
-          code: json_response.meta.status,
+          code: "unknown",
           msg: "An unexpected error has occurred"
         };
         errors_list.push(error);
@@ -47,27 +64,53 @@ angular.module('starter.services', [])
   };
 
   this.doSignup = function(user) {
-    var deferred = $q.defer();
+    var deferred = $q.defer(),
+        authService = this;
 
     Ionic.Auth.signup(user)
     .then(function(data){
-      deferred.resolve(data);
+      // After signup we should automatically login the user
+      authService.doLogin(user)
+      .then(function(data){
+        // success
+        deferred.resolve(data);
+      },function(err){
+        // error
+        deferred.reject(err);
+      });
     }, function(errors){
-      var json_response = JSON.parse(errors.response.responseText),
-          errors_list = [];
+      var errors_list = [];
+      if(errors && errors.response && errors.response.responseText)
+      {
+        var json_response = JSON.parse(errors.response.responseText);
 
-      if(json_response.error.details.length > 0) {
-        _.each(json_response.error.details, function(err){
+        if(json_response.error.details.length > 0) {
+          _.each(json_response.error.details, function(err){
+            var error = {
+              code: json_response.meta.status,
+              msg: err.errors[0]
+            };
+            errors_list.push(error);
+          });
+        }
+        else {
           var error = {
             code: json_response.meta.status,
-            msg: err.errors[0]
+            msg: "An unexpected error has occurred"
           };
           errors_list.push(error);
-        });
+        }
+      }
+      else if (errors && errors.errors && errors.errors.length > 0){
+        var error = {
+          code: "unknown",
+          msg: errors.errors[0]
+        };
+        errors_list.push(error);
       }
       else {
         var error = {
-          code: json_response.meta.status,
+          code: "unknown",
           msg: "An unexpected error has occurred"
         };
         errors_list.push(error);
