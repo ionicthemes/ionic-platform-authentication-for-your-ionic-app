@@ -21,7 +21,7 @@ Follow these links if you want more information:
 * [Ionic **_Documentation_**](http://ionicframework.com/docs)
 * [Visit the Ionic **_Community Forum_**](http://forum.ionicframework.com)
 
-## <a name="step-1">Step 1 - Git & `ionic start`</a>
+### Git & `ionic start`
 
 First we need to link this new Ionic project with our reference repo on github. Clone this repo so we can start working on the app:
 - `git clone https://github.com/ionicthemes/IonicTest.git`
