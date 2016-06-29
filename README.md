@@ -26,13 +26,12 @@ Follow these links if you want more information:
 ### Git & `ionic start`
 
 First we need to link this new Ionic project with our reference repo on github. Clone this repo so we can start working on the app:
-- `git clone https://github.com/ionicthemes/IonicTest.git`
-- `cd IonicTest`
+- `git clone https://github.com/ionicthemes/ionic-platform-authentication-for-your-ionic-app.git`
+- `cd ionic-auth`
 
 After this, we need to set up some stuff before starting working on the **_Ionic_** project. To do so, run these commands:
 - `npm install`
 - `bower install`
-- `ionic setup sass`
 As we are going to use Ionic Platform services, we need to install and init the platform services with this command:
 - `ionic add ionic-platform-web-client`
 - `ionic io init`
