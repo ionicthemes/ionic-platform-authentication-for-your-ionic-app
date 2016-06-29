@@ -1,6 +1,8 @@
 # How to integrate user authentication to your ionic app
 In this tutorial we are going to explain how to add **Log in**, **Log out**, and **Sign up** functionality to your ionic app using the [Ionic Platform](http://ionic.io/platform "Ionic Platform") services.
 
+## Follow the step-by-step instructions available here: https://ionicthemes.com/tutorials/about/add-ionic-platform-authentication-to-your-ionic-app
+
 ## Setup
 
 ### Install Ionic
