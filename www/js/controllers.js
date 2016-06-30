@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('UserCtrl', function($scope, $state, AuthService) {
-  $scope.current_user = Ionic.User.current();
+  $scope.current_user = AuthService.getUser();
 
   $scope.logout = function(){
     AuthService.doLogout();

@@ -9,6 +9,10 @@ angular.module('starter.services', [])
     return deferred.promise;
   };
 
+  this.getUser = function(){
+    return Ionic.User.current();
+  };
+
   this.doLogin = function(user) {
     var deferred = $q.defer(),
         authProvider = 'basic',
