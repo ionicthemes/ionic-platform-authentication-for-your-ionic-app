@@ -41,6 +41,8 @@ angular.module('starter.controllers', [])
 .controller('UserCtrl', function($scope, $state, AuthService) {
   $scope.current_user = AuthService.getUser();
 
+  debugger;
+
   $scope.logout = function(){
     AuthService.doLogout();
 

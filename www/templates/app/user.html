@@ -1,6 +1,12 @@
 <ion-view view-title="User">
   <ion-content class="padding">
-    <h3 class="text-center" ng-show="current_user">Welcome! {{current_user.details.email}}</h3>
+    <div class="list card">
+      <div class="item item-avatar">
+        <img ng-src="{{ current_user.details.image }}">
+        <h2>Welcome</h2>
+        <p>{{ current_user.details.email }}</p>
+      </div>
+    </div>
     <button class="button button-block button-clear button-assertive" ng-click="logout()">Log out</button>
   </ion-content>
 </ion-view>
